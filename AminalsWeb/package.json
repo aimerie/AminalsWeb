@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "jquery": "3.7.1",
+    "jquery-migrate": "3.4.1",
     "@types/jquery": "3.5.29",
     "@types/jqueryui": "1.12.21",
     "bootstrap": "5.3.2",

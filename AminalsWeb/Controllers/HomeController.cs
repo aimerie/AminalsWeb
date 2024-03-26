@@ -20,9 +20,9 @@ namespace AminalsWeb.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult APCMini()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "APC Mini - Utilities";
 
             return View();
         }

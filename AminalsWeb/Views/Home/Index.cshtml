@@ -2,7 +2,6 @@
     ViewBag.Title = "Home Page";
 }
 
-
 @Scripts.Render("~/bundles/main")
 
 <main>
@@ -12,14 +11,19 @@
         <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
     </section>
 
-    <div class="row" data-bind="with: $data.viewModel">
+    <div class="row">
         <section class="col-md-4" aria-labelledby="gettingStartedTitle">
             <h2 id="gettingStartedTitle">Getting started</h2>
             <p>
                 Something something
             </p>
-            <!-- ko if: User !== undefined -->
-            <p data-bind="text: User.fullName"></p>
+            <!-- ko if: $data.User !== undefined -->
+            <p>hi kaite</p>
+            <p data-bind="text: User.fullName()"></p>
+            <p>
+                <span data-bind="text: User.FirstName"></span>
+                <span data-bind="text: User.LastName"></span>
+            </p>
             <!-- /ko -->
         </section>
     </div>
