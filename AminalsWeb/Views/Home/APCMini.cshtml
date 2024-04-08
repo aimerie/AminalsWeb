@@ -2,35 +2,60 @@
     ViewBag.Title = "APC Mini";
 }
 
-@Scripts.Render("~/bundles/apc")
+@Scripts.RenderFormat("<script type=\"module\" src=\"{0}\"></script>", "~/bundles/apc")
 
-@*<div>
-    @for (int iRow = 0; iRow < 8; iRow++)
-    {
-        <div class="row py-2">
-            @for (int iCol = 0; iCol < 8; iCol++)
-            {
-                int iCell = iRow * 8 + iCol;
-
-                <div class="col">
-                    <div class="border text-center">
-                        @(iCell)
-                    </div>
-                </div>
-            }
+<!-- ko if: $data.OutputDeviceNames !== undefined -->
+<div class="row">
+    <div class="col">
+        <div class="hstack gap-2">
+            <strong>Select a MIDI Device:</strong>
+            <ul class="list-group list-group-horizontal list-unstyled" data-bind="foreach: { data: $data.OutputDeviceNames(), as: 'dvc' }">
+                <li>
+                    <button type="button" class="list-group-item list-group-item-action" data-bind="click: $parent.SelectDeviceByName.bind($parent, dvc)">
+                        <span data-bind="text: dvc"></span>
+                    </button>
+                </li>
+            </ul>
         </div>
-    }
+
+    </div>
+    <!-- ko if: $data.Controller() -->
+    <div class="col">
+        <p>
+            <strong>Selected Device: </strong><span data-bind="text: $data.Controller().name"></span>
+        </p>
+    </div>
+    <!-- /ko -->
 </div>
-
-<hr />*@
-
+<!-- /ko -->
+<!-- ko if: $data.IsSupportedController() -->
 <div class="row" data-bind="foreach: $data.Pads">
     <!-- ko if: index % 8 === 0 -->
     <div class="w-100"></div>
     <!-- /ko -->
     <div class="col py-2">
-        <div class="text-center" data-bind="style: {border: '1px solid', borderColor: Color}">
-            <span data-bind="text: index"></span>
+        <div class="text-center" data-bind="">
+            <button type="button" class="w-100" style="min-height: 20px;" data-bind="click: $data.SelectColor.bind($data), style: {backgroundColor: Color}">
+                @*<span data-bind="text: index"></span>*@
+            </button>
         </div>
     </div>
+</div>
+<div class="mt-2">
+    <button type="button" class="btn btn-primary" data-bind="click: $data.SendSignal.bind($data)">Send me a Signal!</button>
+    <button type="button" class="btn btn-primary" data-bind="click: $data.ResetDevice.bind($data)">Reset Devices</button>
+</div>
+<!-- /ko -->
+
+
+
+
+
+<div id="colors" class="d-none">
+    <ul data-bind="foreach: { data: $data.PadColors, as: 'color' }" class="list-group">
+        <li class="hstack">
+            <span class="swatch p-2" data-bind="style: {backgroundColor: color }"></span>
+            <span class="ms-1" data-bind="text: color"></span>
+        </li>
+    </ul>
 </div>

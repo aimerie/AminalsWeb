@@ -119,6 +119,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\style.css">
+      <DependentUpon>style.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\style.min.css">
+      <DependentUpon>style.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -145,11 +151,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="libman.json" />
+    <Content Include="Content\style.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Custom\Main.ts" />
     <TypeScriptCompile Include="Scripts\Custom\Models\APCPad.ts" />
+    <TypeScriptCompile Include="Scripts\Custom\Models\PadColor.ts" />
     <TypeScriptCompile Include="Scripts\Custom\Models\Person.ts" />
     <TypeScriptCompile Include="Scripts\Custom\ViewModels\APCMini.ts" />
   </ItemGroup>

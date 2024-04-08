@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-@Scripts.Render("~/bundles/main")
+@Scripts.RenderFormat("<script type=\"module\" src=\"{0}\"></script>", "~/bundles/main")
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
