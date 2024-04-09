@@ -4,7 +4,7 @@
     , Color2 = "#7F7F7F" // 2 
     , Color3 = "#FFFFFF" // 3 
     , Color4 = "#FF4C4C" // 4 (Bittersweet)
-    , Color5 = "#FF0000" // 5 
+    , Color5 = "#FF0000" // 5 (Red)
     , Color6 = "#590000" // 6 
     , Color7 = "#190000" // 7 
     , Color8 = "#FFBD6C" // 8 

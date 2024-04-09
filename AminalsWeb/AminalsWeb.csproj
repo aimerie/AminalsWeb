@@ -142,7 +142,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\APCMini.cshtml" />
+    <Content Include="Views\Home\ControllerEditor.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +163,7 @@
     <TypeScriptCompile Include="Scripts\Custom\Models\APCPad.ts" />
     <TypeScriptCompile Include="Scripts\Custom\Models\PadColor.ts" />
     <TypeScriptCompile Include="Scripts\Custom\Models\Person.ts" />
-    <TypeScriptCompile Include="Scripts\Custom\ViewModels\APCMini.ts" />
+    <TypeScriptCompile Include="Scripts\Custom\ViewModels\ControllerEditor.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

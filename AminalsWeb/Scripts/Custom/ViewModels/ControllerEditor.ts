@@ -3,11 +3,13 @@ import { PadColor } from "../Models/PadColor.js";
 
 import * as wm from "../../../node_modules/webmidi/dist/esm/webmidi.esm.js";
 
-class APCMiniVM {
+class ControllerEditor {
     public Pads: Array<APCPad> = [];
     public PadColors: Array<PadColor> = [];
 
-    public Controller: KnockoutObservable<wm.Input> = ko.observable<wm.Input>();
+    public ControllerIn = ko.observable<wm.Input>();
+    public ControllerOut = ko.observable<wm.Output>();
+
     /**
      * The full input device models loaded for the page
      */
@@ -15,7 +17,6 @@ class APCMiniVM {
     private wmOutputs: Array<wm.Output> = [];
 
     public OutputDeviceNames = ko.observableArray<string>();
-    public OutputDevice = ko.observable<wm.Output>();
     public IsSupportedController = ko.observable<boolean>(false);
 
     public constructor() {
@@ -26,7 +27,7 @@ class APCMiniVM {
     public OnPostInit(): void {
         // enable webmidi with sysex support
         wm.WebMidi
-            .enable({ sysex: true })
+            .enable(/*{ sysex: true }*/)
             .then(() => this.loadMIDIDevices())
             .catch(err => alert(err));
     }
@@ -36,7 +37,7 @@ class APCMiniVM {
      * @returns
      */
     private loadMIDIDevices = (): any => {
-        console.log("WebMidi loaded with sysex enabled!");
+        console.log("WebMidi loaded withOUT sysex enabled!");
         // const inputs: Array<wm.Input> = wm.WebMidi.inputs;
         const outputs: Array<wm.Output> = wm.WebMidi.outputs;
         let result: Array<string> = [];
@@ -59,25 +60,54 @@ class APCMiniVM {
     private buildPads(): APCPad[] {
         let result: APCPad[] = [];
 
-        for (let i = 0; i < 64; i++) {
+        for (let i = 63; i >= 0; i--) {
             result.push(new APCPad(i, PadColor.Color5, "solid"));
         }
 
         return result;
     }
 
+    public SelectPad = (pad: APCPad): void => {
+        console.log('pad selected', pad);
+
+        const _output = this.ControllerOut();
+        if (_output.name !== undefined) {
+            const out = wm.WebMidi.getOutputByName(_output.name);
+
+            //const padColorVal = pad.Color(PadColor.Color105);
+            //console.log(Object.keys(PadColor));
+            //console.log(padColorVal);
+
+            let channelIdx: number = 6;
+            if (pad.Behavior === "blink") {
+                pad.Behavior = "pulse";
+                channelIdx = 8;
+            } else if (pad.Behavior === "pulse") {
+                pad.Behavior = "solid";
+                channelIdx = 6;
+            } else if (pad.Behavior === "solid") {
+                pad.Behavior = "blink";
+                channelIdx = 13;
+            }
+
+            out.sendNoteOn(pad.index, { rawAttack: pad.index, time: 2, channels: channelIdx });
+        }
+    }
+
     public SendSignal = (): void => {
-        const _output = this.OutputDevice();
+        const _output = this.ControllerOut();
         if (_output.name !== undefined) {
             const out = wm.WebMidi.getOutputByName(_output.name);
             for (let _pad of this.Pads) {
-                out.sendNoteOn(_pad.index, { rawAttack: _pad.index, time: 2, channels: 6 });
+                let clrIdx = _pad.index;
+
+                out.sendNoteOn(_pad.index, { rawAttack: clrIdx, time: 2, channels: 6 });
             }
         }        
     }
 
     public ResetDevice = (): void => {
-        const _output = this.OutputDevice();
+        const _output = this.ControllerOut();
         if (_output.name !== undefined) {
             const out = wm.WebMidi.getOutputByName(_output.name);
             for (let _pad of this.Pads) {
@@ -135,19 +165,16 @@ class APCMiniVM {
             this.IsSupportedController(isAkai);
 
             if (this.IsSupportedController()) {
-                this.OutputDevice(outputDvc);
+                this.ControllerOut(outputDvc);
                 this.lightThatShitUp(outputDvc);
-            }
-            
-            
-            
+            }  
         }
     }
 }
 
 
 $((): void => {
-    const viewModel = new APCMiniVM();
+    const viewModel = new ControllerEditor();
     ko.applyBindings(viewModel); // This makes Knockout get to work
 
     viewModel.OnPostInit();

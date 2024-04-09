@@ -20,9 +20,9 @@ namespace AminalsWeb.Controllers
             return View();
         }
 
-        public ActionResult APCMini()
+        public ActionResult ControllerEditor()
         {
-            ViewBag.Message = "APC Mini - Utilities";
+            ViewBag.Message = "MIDI Controller Editor";
 
             return View();
         }
